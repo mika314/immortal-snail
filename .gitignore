@@ -14,7 +14,7 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
+#*.dll
 
 # Fortran module files
 *.mod
@@ -23,7 +23,7 @@
 *.lai
 *.la
 *.a
-*.lib
+#*.lib
 
 # Executables
 *.exe
@@ -72,3 +72,27 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+*~
+*.blend1
+WindowsNoEditor/
+*-old*.wav
+Backup/
+/Content/Lost_Island/
+/Content/MS_Fruits/
+/Content/MS_ForestTut/
+/Content/KitchenProps/
+/Content/WoodenBoats/
+/Content/SnowCrab/
+/Content/GiantScorpion/
+/Content/GoodFood/
+/Content/STF3D/
+/Content/TropicalFish/
+/Assets/BL_proxy/
+.coddle/
+/gen_make/gen_make
+/OrdySource.pri
+/.ignore
+/.kdev4/
+/.vscode/
+/CMakeLists.txt
+/LinuxNoEditor/

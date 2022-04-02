@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{0004AB6A-08DA-136A-BCF3-E8E2DE5D6469}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "ImmortalSnail",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
