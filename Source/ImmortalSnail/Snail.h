@@ -25,5 +25,11 @@ private:
   UFUNCTION()
   void onHit(AActor *me, AActor *other, FVector impact, const FHitResult &hitResult);
 
+  std::vector<class USoundBase *> onHitSounds;
+  class USoundBase *teleportCue;
+  class UAudioComponent *slimeSound;
+
   std::vector<std::pair<int, int>> path;
+
+  float lastTimeSay;
 };

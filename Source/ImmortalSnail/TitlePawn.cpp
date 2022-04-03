@@ -39,7 +39,7 @@ auto ATitlePawn::onStart() -> void
   if (level.empty())
   {
     LOG("Loading first level");
-    UGameplayStatics::OpenLevel(this, FName("GamePlay"), true, TEXT("level=1"));
+    UGameplayStatics::OpenLevel(this, FName("Intro"), true, TEXT("level=1"));
   }
   else
   {

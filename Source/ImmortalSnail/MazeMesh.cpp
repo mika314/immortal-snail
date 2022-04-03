@@ -30,6 +30,7 @@ AMazeMesh::AMazeMesh()
   arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow3")));
   arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow4")));
   arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow5")));
+  arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow6")));
 
   auto root = CreateDefaultSubobject<USceneComponent>(TEXT("root"));
   SetRootComponent(root);

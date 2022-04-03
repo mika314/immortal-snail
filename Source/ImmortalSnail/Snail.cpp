@@ -1,23 +1,32 @@
 // Copyright 2022 Mika Pi
 
 #include "Snail.h"
+#include "Components/AudioComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
 #include "GameFramework/Character.h"
 #include "GenericPlatform/GenericPlatformMath.h"
+#include "ImmortalSnailProjectile.h"
 #include "Kismet/GameplayStatics.h"
 #include "PrjGameStateBase.h"
 #include "log.h"
 #include "obj_finder.h"
 #include <array>
 
-ASnail::ASnail()
+ASnail::ASnail() : teleportCue(objFinder<USoundBase>(TEXT("/Game/teleport_Cue"))), slimeSound(CreateDefaultSubobject<UAudioComponent>("slimeSound"))
 {
   PrimaryActorTick.bCanEverTick = true;
   auto mesh = GetStaticMeshComponent();
   mesh->SetStaticMesh(objFinder<UStaticMesh>(TEXT("/Game/SM_Snail")));
   mesh->SetMobility(EComponentMobility::Movable);
   mesh->SetCollisionProfileName(TEXT("BlockAll"));
+
+  onHitSounds.push_back(objFinder<USoundBase>(TEXT("/Game/Snail-0001_Cue")));
+  onHitSounds.push_back(objFinder<USoundBase>(TEXT("/Game/Snail-0002_Cue")));
+  onHitSounds.push_back(objFinder<USoundBase>(TEXT("/Game/Snail-0003_Cue")));
+  onHitSounds.push_back(objFinder<USoundBase>(TEXT("/Game/Snail-0004_Cue")));
+  slimeSound->SetSound(objFinder<USoundBase>(TEXT("/Game/Slime_Cue")));
+  slimeSound->SetupAttachment(RootComponent);
 }
 
 static auto aStar(const Maze &maze, int sx, int sy, int px, int py) -> std::vector<std::pair<int, int>>
@@ -119,7 +128,7 @@ auto ASnail::Tick(float dt) -> void
   const auto player = UGameplayStatics::GetPlayerCharacter(this, 0);
   const auto pLoc = player->GetActorLocation();
 
-  if (rand() % 1000 == 0)
+  if (rand() % 250 == 0)
   {
     path.clear();
     auto canSeeFunc = [&](FVector loc) {
@@ -134,9 +143,9 @@ auto ASnail::Tick(float dt) -> void
       }
       return false;
     };
-    const auto canSee = canSeeFunc(GetActorLocation());
+    const auto canSee = canSeeFunc(sLoc);
     LOG("can see", canSee);
-    if (!canSee)
+    if (!canSee && (sLoc - pLoc).Size() > 400)
     {
       for (auto i = 0; i < 10; ++i)
       {
@@ -157,13 +166,14 @@ auto ASnail::Tick(float dt) -> void
           LOG("teleport", x, y, "player loc", pLoc.X / 200.f, pLoc.Y / 200.f);
           SetActorLocation(newLoc, false, nullptr, ETeleportType::ResetPhysics);
           LOG("check", GetActorLocation());
+          UGameplayStatics::PlaySoundAtLocation(this, teleportCue, GetActorLocation());
           return;
         }
       }
     }
   }
 
-  if (path.empty() && rand() % 100 == 0)
+  if (path.empty() && rand() % 25 == 0)
   {
     LOG("player",
         static_cast<int>(pLoc.X / 200.f),
@@ -181,7 +191,7 @@ auto ASnail::Tick(float dt) -> void
     const auto v = goal - sLoc;
     if (v.Size() < 25)
       path.pop_back();
-    SetActorLocation(sLoc + v.GetSafeNormal(1) * 40.f * dt);
+    SetActorLocation(sLoc + v.GetSafeNormal(1) * 80.f * dt);
     auto angle = FGenericPlatformMath::Atan2(v.Y, v.X);
     SetActorRotation(FRotator{0, angle * 180.f / 3.1415926f, 0});
   }
@@ -201,6 +211,7 @@ auto ASnail::Tick(float dt) -> void
 auto ASnail::BeginPlay() -> void
 {
   Super::BeginPlay();
+  lastTimeSay = 0.f;
   auto gameState = GetWorld()->GetGameState<APrjGameStateBase>();
   if (!gameState)
   {
@@ -228,5 +239,14 @@ auto ASnail::onHit(AActor *me, AActor *other, FVector impact, const FHitResult &
     }
     gameState->endGame(EndGameState::died);
     return;
+  }
+  else if (Cast<AImmortalSnailProjectile>(other))
+  {
+    const auto t = GetWorld()->GetTimeSeconds();
+    if (t - lastTimeSay > 5.f)
+    {
+      lastTimeSay = t;
+      UGameplayStatics::PlaySoundAtLocation(this, onHitSounds[rand() % onHitSounds.size()], GetActorLocation());
+    }
   }
 }
