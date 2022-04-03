@@ -26,4 +26,5 @@ public:
   void Tick(float DeltaTime) override;
 
   std::vector<class UStaticMesh *> walls;
+  std::vector<class UStaticMesh *> arrows;
 };

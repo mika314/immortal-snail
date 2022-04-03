@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Engine/StaticMeshActor.h"
+#include <vector>
+
 #include "Snail.generated.h"
 
 /**
@@ -17,5 +19,8 @@ public:
   ASnail();
 
 private:
+  auto BeginPlay() -> void override;
   auto Tick(float) -> void override;
+
+  std::vector<std::pair<int, int>> path;
 };

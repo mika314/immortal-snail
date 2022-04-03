@@ -12,17 +12,13 @@ namespace Internal
   void dumpLog(const char *);
   void dumpLogErr(const char *);
 
+  inline auto logToStrm(std::ostream &) -> void {}
+
   template <typename Head, typename... Tail>
   auto logToStrm(std::ostream &strm, Head &&head, Tail &&...tail) -> void
   {
     strm << head << " ";
     logToStrm(strm, std::forward<Tail>(tail)...);
-  }
-
-  template <typename Head>
-  auto logToStrm(std::ostream &strm, Head &&head) -> void
-  {
-    strm << head << " ";
   }
 
   template <typename... Args>

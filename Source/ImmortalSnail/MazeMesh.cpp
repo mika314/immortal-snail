@@ -25,6 +25,12 @@ AMazeMesh::AMazeMesh()
   walls.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Wall7")));
   walls.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Wall8")));
 
+  arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow1")));
+  arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow2")));
+  arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow3")));
+  arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow4")));
+  arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow5")));
+
   auto root = CreateDefaultSubobject<USceneComponent>(TEXT("root"));
   SetRootComponent(root);
 }
@@ -39,7 +45,8 @@ void AMazeMesh::BeginPlay()
   if (!gameState)
   {
     LOG_ERR("GameSate is not APrjGameStateBase");
-    return;
+    return
+    ;
   }
 
   auto maze = gameState->getMaze();
@@ -51,14 +58,28 @@ void AMazeMesh::BeginPlay()
       auto wall = maze.getWall(x, y * 2);
       if (wall == 0)
         continue;
-      auto mesh = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass());
-      mesh->RegisterComponent();
-      mesh->SetWorldLocation(FVector{(x + 1) * 200.f, y * 200.f, 0.f});
-      mesh->SetWorldRotation(FRotator{0.f, 180.f, 0.f});
-      mesh->SetStaticMesh(walls[wall - 1]);
-      mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
-      mesh->SetMobility(EComponentMobility::Movable);
-      mesh->SetCollisionProfileName(TEXT("BlockAll"));
+      {
+        auto mesh = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass());
+        mesh->RegisterComponent();
+        mesh->SetWorldLocation(FVector{(x + 1) * 200.f, y * 200.f, 0.f});
+        mesh->SetWorldRotation(FRotator{0.f, 180.f, 0.f});
+        mesh->SetStaticMesh(walls[wall - 1]);
+        mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
+        mesh->SetMobility(EComponentMobility::Movable);
+        mesh->SetCollisionProfileName(TEXT("BlockAll"));
+      }
+
+      if (rand() % 4 == 0)
+      {
+        auto mesh = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass());
+        mesh->RegisterComponent();
+        mesh->SetWorldLocation(FVector{(x + 1) * 200.f, y * 200.f, 0.f});
+        mesh->SetWorldRotation(FRotator{0.f, 180.f, 0.f});
+        mesh->SetStaticMesh(arrows[rand() % arrows.size()]);
+        mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
+        mesh->SetMobility(EComponentMobility::Movable);
+        mesh->SetCollisionProfileName(TEXT("NoCollision"));
+      }
     }
 
   for (auto y = 0; y < size - 1; ++y)
@@ -67,14 +88,27 @@ void AMazeMesh::BeginPlay()
       auto wall = maze.getWall(x, y * 2 + 1);
       if (wall == 0)
         continue;
-      auto mesh = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass());
-      mesh->RegisterComponent();
-      mesh->SetWorldLocation(FVector{x * 200.f, (y + 1) * 200.f, 0.f});
-      mesh->SetWorldRotation(FRotator{0.f, 90.f, 0.f});
-      mesh->SetStaticMesh(walls[wall - 1]);
-      mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
-      mesh->SetMobility(EComponentMobility::Movable);
-      mesh->SetCollisionProfileName(TEXT("BlockAll"));
+      {
+        auto mesh = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass());
+        mesh->RegisterComponent();
+        mesh->SetWorldLocation(FVector{x * 200.f, (y + 1) * 200.f, 0.f});
+        mesh->SetWorldRotation(FRotator{0.f, 90.f, 0.f});
+        mesh->SetStaticMesh(walls[wall - 1]);
+        mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
+        mesh->SetMobility(EComponentMobility::Movable);
+        mesh->SetCollisionProfileName(TEXT("BlockAll"));
+      }
+      if (rand() % 4 == 0)
+      {
+        auto mesh = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass());
+        mesh->RegisterComponent();
+        mesh->SetWorldLocation(FVector{x * 200.f, (y + 1) * 200.f, 0.f});
+        mesh->SetWorldRotation(FRotator{0.f, 90.f, 0.f});
+        mesh->SetStaticMesh(arrows[rand() % arrows.size()]);
+        mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
+        mesh->SetMobility(EComponentMobility::Movable);
+        mesh->SetCollisionProfileName(TEXT("NoCollision"));
+      }
     }
 
   {
