@@ -12,7 +12,7 @@ auto APrjGameStateBase ::getMaze() const -> const Maze &
 {
   if (!maze)
   {
-    maze = std::make_unique<Maze>(16);
+    maze = std::make_unique<Maze>(32);
   }
 
   return *maze;

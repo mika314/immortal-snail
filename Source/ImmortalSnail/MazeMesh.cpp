@@ -55,7 +55,6 @@ void AMazeMesh::BeginPlay()
       mesh->RegisterComponent();
       mesh->SetWorldLocation(FVector{(x + 1) * 200.f, y * 200.f, 0.f});
       mesh->SetWorldRotation(FRotator{0.f, 180.f, 0.f});
-      // mesh->OnComponentCreated(); // Might need this line, might not.
       mesh->SetStaticMesh(walls[wall - 1]);
       mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
       mesh->SetMobility(EComponentMobility::Movable);
@@ -72,12 +71,56 @@ void AMazeMesh::BeginPlay()
       mesh->RegisterComponent();
       mesh->SetWorldLocation(FVector{x * 200.f, (y + 1) * 200.f, 0.f});
       mesh->SetWorldRotation(FRotator{0.f, 90.f, 0.f});
-      // mesh->OnComponentCreated(); // Might need this line, might not.
       mesh->SetStaticMesh(walls[wall - 1]);
       mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
       mesh->SetMobility(EComponentMobility::Movable);
       mesh->SetCollisionProfileName(TEXT("BlockAll"));
     }
+
+  {
+    auto mesh = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass());
+    mesh->RegisterComponent();
+    mesh->SetWorldLocation(FVector{0, 0.f, 0.f});
+    mesh->SetWorldRotation(FRotator{0.f, 90.f, 0.f});
+    mesh->SetWorldScale3D(FVector{1.f, 1.f * size, 1.f});
+    mesh->SetStaticMesh(walls[rand() % walls.size()]);
+    mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
+    mesh->SetMobility(EComponentMobility::Movable);
+    mesh->SetCollisionProfileName(TEXT("BlockAll"));
+  }
+  {
+    auto mesh = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass());
+    mesh->RegisterComponent();
+    mesh->SetWorldLocation(FVector{0, size * 200.f, 0.f});
+    mesh->SetWorldRotation(FRotator{0.f, 90.f, 0.f});
+    mesh->SetWorldScale3D(FVector{1.f, 1.f * size, 1.f});
+    mesh->SetStaticMesh(walls[rand() % walls.size()]);
+    mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
+    mesh->SetMobility(EComponentMobility::Movable);
+    mesh->SetCollisionProfileName(TEXT("BlockAll"));
+  }
+  {
+    auto mesh = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass());
+    mesh->RegisterComponent();
+    mesh->SetWorldLocation(FVector{0, 200.f, 0.f});
+    mesh->SetWorldRotation(FRotator{0.f, 180.f, 0.f});
+    mesh->SetWorldScale3D(FVector{1.f, 1.f * size - 1.f, 1.f});
+    mesh->SetStaticMesh(walls[rand() % walls.size()]);
+    mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
+    mesh->SetMobility(EComponentMobility::Movable);
+    mesh->SetCollisionProfileName(TEXT("BlockAll"));
+  }
+  {
+    auto mesh = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass());
+    mesh->RegisterComponent();
+    mesh->SetWorldLocation(FVector{size * 200.f, 0.f, 0.f});
+    mesh->SetWorldRotation(FRotator{0.f, 180.f, 0.f});
+    mesh->SetWorldScale3D(FVector{1.f, 1.f * size - 1.f, 1.f});
+    mesh->SetStaticMesh(walls[rand() % walls.size()]);
+    mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
+    mesh->SetMobility(EComponentMobility::Movable);
+    mesh->SetCollisionProfileName(TEXT("BlockAll"));
+  }
 }
 
 // Called every frame
