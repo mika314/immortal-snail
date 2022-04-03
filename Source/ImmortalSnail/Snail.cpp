@@ -105,7 +105,7 @@ static auto aStar(const Maze &maze, int sx, int sy, int px, int py) -> std::vect
 auto ASnail::Tick(float dt) -> void
 {
   Super::Tick(dt);
-  SetActorScale3D(FVector{1.f + .1f * sinf(GetWorld()->GetTimeSeconds()), 1.f, 1.f});
+  SetActorScale3D(FVector{1.f + .15f * sinf(2.f * GetWorld()->GetTimeSeconds()), 1.f, 1.f});
 
   auto gameState = GetWorld()->GetGameState<APrjGameStateBase>();
   if (!gameState)
@@ -212,4 +212,21 @@ auto ASnail::BeginPlay() -> void
   const auto sLoc = GetActorLocation();
   auto newLoc = FVector{(size - 1) * 200.f + 100.f, (size - 1) * 200.f + 100.f, sLoc.Z};
   SetActorLocation(newLoc, false);
+  OnActorHit.AddDynamic(this, &ASnail::onHit);
+}
+
+auto ASnail::onHit(AActor *me, AActor *other, FVector impact, const FHitResult &hitResult) -> void
+{
+  const auto player = UGameplayStatics::GetPlayerCharacter(this, 0);
+  if (player == other)
+  {
+    auto gameState = GetWorld()->GetGameState<APrjGameStateBase>();
+    if (!gameState)
+    {
+      LOG_ERR("GameSate is not APrjGameStateBase");
+      return;
+    }
+    gameState->endGame(EndGameState::died);
+    return;
+  }
 }

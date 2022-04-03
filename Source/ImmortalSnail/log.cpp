@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Mika Pi
+// Copyright (c) 2022 Mika Pi
 
 #include "log.h"
 

@@ -22,5 +22,8 @@ private:
   auto BeginPlay() -> void override;
   auto Tick(float) -> void override;
 
+  UFUNCTION()
+  void onHit(AActor *me, AActor *other, FVector impact, const FHitResult &hitResult);
+
   std::vector<std::pair<int, int>> path;
 };

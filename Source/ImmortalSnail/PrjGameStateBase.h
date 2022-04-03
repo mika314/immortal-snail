@@ -9,17 +9,18 @@
 
 #include "PrjGameStateBase.generated.h"
 
-/**
- *
- */
+enum class EndGameState { died, survived };
+
 UCLASS()
 class IMMORTALSNAIL_API APrjGameStateBase : public AGameStateBase
 {
   GENERATED_BODY()
 public:
   auto getMaze() const -> const Maze &;
+  auto endGame(EndGameState) -> void;
 
 private:
+  auto BeginPlay() -> void override;
   auto EndPlay(const EEndPlayReason::Type) -> void override;
 
   mutable std::unique_ptr<Maze> maze;
