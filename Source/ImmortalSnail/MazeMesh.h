@@ -25,6 +25,6 @@ public:
   // Called every frame
   void Tick(float DeltaTime) override;
 
-  std::vector<class UStaticMesh *> walls;
+  std::vector<std::vector<class UStaticMesh *>> walls;
   std::vector<class UStaticMesh *> arrows;
 };
