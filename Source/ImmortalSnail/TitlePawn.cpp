@@ -44,6 +44,9 @@ auto ATitlePawn::onStart() -> void
   else
   {
     LOG("Loading", level);
-    UGameplayStatics::OpenLevel(this, FName("GamePlay"), true, UTF8_TO_TCHAR(("level=" + level).c_str()));
+    if (level != "999")
+      UGameplayStatics::OpenLevel(this, FName("GamePlay"), true, UTF8_TO_TCHAR(("level=" + level).c_str()));
+    else
+      UGameplayStatics::OpenLevel(this, FName("Title"));
   }
 }

@@ -81,7 +81,10 @@ auto APrjGameStateBase::endGame(EndGameState val) -> void
     else
     {
       const auto iLevel = std::stoi(level) + 1;
-      UGameplayStatics::OpenLevel(this, FName("Survived"), true, UTF8_TO_TCHAR(("level=" + std::to_string(iLevel)).c_str()));
+      if (iLevel <= 11)
+        UGameplayStatics::OpenLevel(this, FName("Survived"), true, UTF8_TO_TCHAR(("level=" + std::to_string(iLevel)).c_str()));
+      else
+        UGameplayStatics::OpenLevel(this, FName("Outro"), true, UTF8_TO_TCHAR(("level=999")));
     }
     break;
   }
