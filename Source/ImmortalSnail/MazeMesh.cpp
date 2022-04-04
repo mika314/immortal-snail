@@ -67,6 +67,10 @@ AMazeMesh::AMazeMesh()
   arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow4")));
   arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow5")));
   arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow6")));
+  arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow7")));
+  arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow8")));
+  arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow9")));
+  arrows.push_back(objFinder<UStaticMesh>(TEXT("/Game/SM_Arrow10")));
 
   auto root = CreateDefaultSubobject<USceneComponent>(TEXT("root"));
   SetRootComponent(root);
@@ -198,6 +202,40 @@ void AMazeMesh::BeginPlay()
     mesh->SetWorldRotation(FRotator{0.f, 180.f, 0.f});
     mesh->SetWorldScale3D(FVector{1.f, 1.f * size - 1.f, 1.f});
     const auto wall = rand() % walls[level % walls.size()].size();
+    mesh->SetStaticMesh(walls[level % walls.size()][wall]);
+    mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
+    mesh->SetMobility(EComponentMobility::Movable);
+    mesh->SetCollisionProfileName(TEXT("BlockAll"));
+  }
+
+  {
+    auto mesh = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass());
+    mesh->RegisterComponent();
+    mesh->SetWorldLocation(FVector{0.f, 0.f, 0.f});
+    mesh->SetWorldRotation(FRotator{0.f, -90.f, 0.f});
+    const auto wall = 0;
+    mesh->SetStaticMesh(walls[level % walls.size()][wall]);
+    mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
+    mesh->SetMobility(EComponentMobility::Movable);
+    mesh->SetCollisionProfileName(TEXT("BlockAll"));
+  }
+  {
+    auto mesh = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass());
+    mesh->RegisterComponent();
+    mesh->SetWorldLocation(FVector{0.f, 200.f, 0.f});
+    mesh->SetWorldRotation(FRotator{0.f, -90.f, 0.f});
+    const auto wall = 0;
+    mesh->SetStaticMesh(walls[level % walls.size()][wall]);
+    mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
+    mesh->SetMobility(EComponentMobility::Movable);
+    mesh->SetCollisionProfileName(TEXT("BlockAll"));
+  }
+  {
+    auto mesh = NewObject<UStaticMeshComponent>(this, UStaticMeshComponent::StaticClass());
+    mesh->RegisterComponent();
+    mesh->SetWorldLocation(FVector{-200.f, 200.f, 0.f});
+    mesh->SetWorldRotation(FRotator{0.f, 0.f, 0.f});
+    const auto wall = 0;
     mesh->SetStaticMesh(walls[level % walls.size()][wall]);
     mesh->AttachToComponent(GetRootComponent(), FAttachmentTransformRules{EAttachmentRule::KeepRelative, false});
     mesh->SetMobility(EComponentMobility::Movable);
