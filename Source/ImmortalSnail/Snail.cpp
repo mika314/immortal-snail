@@ -166,7 +166,7 @@ auto ASnail::Tick(float dt) -> void
           LOG("teleport", x, y, "player loc", pLoc.X / 200.f, pLoc.Y / 200.f);
           SetActorLocation(newLoc, false, nullptr, ETeleportType::ResetPhysics);
           LOG("check", GetActorLocation());
-          UGameplayStatics::PlaySoundAtLocation(this, teleportCue, GetActorLocation());
+          UGameplayStatics::PlaySoundAtLocation(this, teleportCue, newLoc);
           return;
         }
       }
