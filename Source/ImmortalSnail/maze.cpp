@@ -7,7 +7,7 @@ static const auto WallTypesNum = 8;
 
 Maze::Maze(int size) : size(size)
 {
-  for (auto i = 0U; i < size * (2 * size - 1); ++i)
+  for (auto i = 0; i < size * (2 * size - 1); ++i)
   {
     auto t = rand() % (WallTypesNum + 4);
     if (t > WallTypesNum)
